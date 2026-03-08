@@ -1,0 +1,12 @@
+# 忽略 node_modules 目录
+node_modules/
+
+# 其他常见忽略项（可选）
+*.log
+.DS_Store
+dist/
+build/
+.idea/
+.vscode/
+target/
+*.iml
