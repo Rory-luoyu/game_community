@@ -17,8 +17,12 @@ spring:
 #mybatis配置数据库中划线命名对应实体类驼峰命名
 mybatis-plus:
   configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
   global-config:
     db-config:
       table-prefix: tb_
       id-type: auto
+
+#日志配置
+logging:
+  config: classpath:logback-spring.xml

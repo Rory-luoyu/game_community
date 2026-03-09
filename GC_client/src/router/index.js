@@ -1,31 +1,33 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Post from "@/views/home/Post";
-import User from "@/views/home/User";
-import Home from "@/views/Home";
-import Operate from "@/views/Operate";
-import Index from "@/views/home/Index";
-import Partition from "@/views/home/Partition";
-import NewPost from "@/views/home/NewPost";
-import FindPassword from "@/views/operate/FindPassword";
-import Register from "@/views/operate/Register";
-import PostList from "@/views/home/user/PostList";
-import EditUser from "@/views/home/user/EditUser";
-import ConnectionList from "@/views/home/user/ConnectionList";
-import LikedList from "@/views/home/user/LikedList";
-import FansList from "@/views/home/user/FansList";
-import FocusList from "@/views/home/user/FocusList";
+
+// 路由懒加载
+const Post = () => import("@/views/home/Post");
+const User = () => import("@/views/home/User");
+const Home = () => import("@/views/Home");
+const Operate = () => import("@/views/Operate");
+const Index = () => import("@/views/home/Index");
+const Partition = () => import("@/views/home/Partition");
+const NewPost = () => import("@/views/home/NewPost");
+const FindPassword = () => import("@/views/operate/FindPassword");
+const Register = () => import("@/views/operate/Register");
+const PostList = () => import("@/views/home/user/PostList");
+const EditUser = () => import("@/views/home/user/EditUser");
+const ConnectionList = () => import("@/views/home/user/ConnectionList");
+const LikedList = () => import("@/views/home/user/LikedList");
+const FansList = () => import("@/views/home/user/FansList");
+const FocusList = () => import("@/views/home/user/FocusList");
 
 Vue.use(VueRouter)
 
 const routes = [
     //默认首页
-    {path: "/", redirect: "/home"},
+    { path: "/", redirect: "/home" },
     //首页
     {
         path: "/home", component: Home, children: [
-            {path: "/", redirect: "index"},
-            {name: "index", path: "index", component: Index},
+            { path: "/", redirect: "index" },
+            { name: "index", path: "index", component: Index },
             {
                 name: "partition", path: "partition", component: Partition, props($route) {
                     return {
@@ -46,7 +48,7 @@ const routes = [
                         userId: $route.query.userId
                     }
                 }, children: [
-                    {name: "user", path: "/", redirect: "postList"},
+                    { name: "user", path: "/", redirect: "postList" },
                     {
                         name: "postList", path: "postList", component: PostList, props($route) {
                             return {
@@ -91,19 +93,21 @@ const routes = [
                     },
                 ]
             },
-            {name: "newPost", path: "newPost", component: NewPost, props($route) {
+            {
+                name: "newPost", path: "newPost", component: NewPost, props($route) {
                     return {
                         editPostId: $route.query.editPostId
                     }
-                }},
+                }
+            },
         ]
     },
     //操作
     {
         path: "/operate", component: Operate, children: [
-            {path: "/", redirect: "findPassword"},
-            {name: "findPassword", path: "findPassword", component: FindPassword},
-            {name: "register", path: "register", component: Register},
+            { path: "/", redirect: "findPassword" },
+            { name: "findPassword", path: "findPassword", component: FindPassword },
+            { name: "register", path: "register", component: Register },
         ]
     }
 ]

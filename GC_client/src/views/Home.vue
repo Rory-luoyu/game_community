@@ -15,16 +15,12 @@
 </template>
 
 <script>
-import GCHeader from "@/components/GCHeader";
-import GCFooter from "@/components/GCFooter";
-import LoginDialog from "@/components/dialog/LoginDialog";
-
 export default {
   name: "Home",
   components: {
-    GCHeader,
-    GCFooter,
-    LoginDialog
+    GCHeader: () => import("@/components/GCHeader"),
+    GCFooter: () => import("@/components/GCFooter"),
+    LoginDialog: () => import("@/components/dialog/LoginDialog")
   },
   methods: {}
 }

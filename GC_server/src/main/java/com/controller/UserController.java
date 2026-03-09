@@ -36,30 +36,23 @@ public class UserController {
      */
     @GetMapping("/getCode/{mail}/{type}")
     public RtnData getCode(@PathVariable("mail") String mail, @PathVariable("type") String type) {
-        RtnData rtnData = new RtnData();
         //1、判断邮箱是否已注册
         //1.1、校验邮箱格式
         if (!AjaxUtil.checkEmail(mail)) {
             //邮箱格式有误
-            rtnData.setFlag(false);
-            rtnData.setMsg("邮箱格式有误");
-            return rtnData;
+            return RtnData.fail("邮箱格式有误");
         }
         //1.2、查询数据库
         User user = new User();
         user.setUserMail(mail);
         if (!userService.isOneUserExist(user) && !"register".equals(type)) {
             //数据库不存在邮箱
-            rtnData.setFlag(false);
-            rtnData.setMsg("用户邮箱尚未注册");
-            return rtnData;
+            return RtnData.fail("用户邮箱尚未注册");
         }
         //2、生成验证码
         String code = userService.getCode(mail, type);
         Boolean flag = sendMailService.sendMail(mail, code, type);
-        rtnData.setFlag(flag);
-        rtnData.setData(flag);
-        return rtnData;
+        return RtnData.success(flag);
     }
 
     /**
@@ -70,19 +63,15 @@ public class UserController {
      */
     @PostMapping("/doLoginByCode")
     public RtnData doLoginByVCode(@RequestBody UserCode userCode, HttpSession session) {
-        RtnData rtnData = new RtnData();
         //根据邮箱和验证码登录
         User loginUser = userService.loginByCode(userCode);
         if (loginUser != null) {
             //登录成功，打包返回数据
-            rtnData.setFlag(true);
-            rtnData.setData(loginUser);
             //添加session
             session.setAttribute("loginUser", loginUser);
-            return rtnData;
+            return RtnData.success(loginUser);
         }
-        rtnData.setFlag(false);
-        return rtnData;
+        return RtnData.fail("登录失败");
     }
 
     /**
@@ -92,15 +81,10 @@ public class UserController {
      */
     @PostMapping("/verifyCode")
     public RtnData verifyCode(@RequestBody UserCode userCode) {
-        RtnData rtnData = new RtnData();
         if (userService.verifyCode(userCode)) {
-            rtnData.setFlag(true);
-            rtnData.setData(true);
-            return rtnData;
+            return RtnData.success(true);
         }
-        rtnData.setFlag(false);
-        rtnData.setMsg("验证码错误");
-        return rtnData;
+        return RtnData.fail("验证码错误");
     }
 
     /**
@@ -110,15 +94,10 @@ public class UserController {
      */
     @PostMapping("/register")
     public RtnData register(@RequestBody UserCode userCode) {
-        RtnData rtnData = new RtnData();
         if (userService.register(userCode)) {
-            rtnData.setFlag(true);
-            rtnData.setData(true);
-            return rtnData;
+            return RtnData.success(true);
         }
-        rtnData.setFlag(false);
-        rtnData.setMsg("注册失败");
-        return rtnData;
+        return RtnData.fail("注册失败");
     }
 
     /**
@@ -130,13 +109,10 @@ public class UserController {
      */
     @PostMapping("/doLoginByPassword")
     public RtnData doLoginByPassword(@RequestBody UserCode user, HttpServletRequest request, HttpServletResponse response) {
-        RtnData rtnData = new RtnData();
         // 根据密码登录
         User loginUser = userService.loginByPassword(user);
         if (loginUser != null) {
             //登录成功，打包返回数据
-            rtnData.setFlag(true);
-            rtnData.setData(loginUser);
             //添加session
             request.getSession().setAttribute("loginUser", loginUser);
             if (user.getRememberMe()) {
@@ -150,10 +126,9 @@ public class UserController {
                 response.addCookie(userMailCookie);
                 response.addCookie(userPasswordCookie);
             }
-            return rtnData;
+            return RtnData.success(loginUser);
         }
-        rtnData.setFlag(false);
-        return rtnData;
+        return RtnData.fail("登录失败");
     }
 
     /**
@@ -163,7 +138,6 @@ public class UserController {
      */
     @GetMapping("/doLoginByCookie")
     public RtnData doLoginByCookie(HttpServletRequest request){
-        RtnData rtnData = new RtnData();
         int trueData = 0;
         UserCode user = new UserCode();
         Cookie[] cookies = request.getCookies();
@@ -182,15 +156,12 @@ public class UserController {
             User loginUser = userService.loginByPassword(user);
             if (loginUser != null) {
                 //登录成功，打包返回数据
-                rtnData.setFlag(true);
-                rtnData.setData(loginUser);
                 //添加session
                 request.getSession().setAttribute("loginUser", loginUser);
-                return rtnData;
+                return RtnData.success(loginUser);
             }
         }
-        rtnData.setFlag(false);
-        return rtnData;
+        return RtnData.fail("登录失败");
     }
 
     /**
@@ -201,18 +172,13 @@ public class UserController {
      */
     @PostMapping("/changePassword")
     public RtnData changePassword(@RequestBody UserCode userCode) {
-        RtnData rtnData = new RtnData();
         if (userService.verifyCode(userCode)) {
             //验证成功，可以修改密码
             if (userService.changePassword(userCode)) {
                 //修改成功
-                rtnData.setFlag(true);
-                rtnData.setData(true);
-                return rtnData;
+                return RtnData.success(true);
             }
         }
-        rtnData.setFlag(false);
-        rtnData.setMsg("修改密码失败");
-        return rtnData;
+        return RtnData.fail("修改密码失败");
     }
 }

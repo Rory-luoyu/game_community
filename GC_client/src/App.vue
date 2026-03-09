@@ -7,8 +7,6 @@
 </template>
 
 <script>
-import LoginDialog from "@/components/dialog/LoginDialog";
-import BackTop from "@/components/BackTop";
 import {isNotEmpty} from "@/uitls";
 import {mapMutations} from "vuex";
 import {refreshSession, hasLoginUser, loginByCookie, destroySession} from "@/api";
@@ -21,8 +19,8 @@ export default {
     }
   },
   components: {
-    LoginDialog,
-    BackTop,
+    LoginDialog: () => import("@/components/dialog/LoginDialog"),
+    BackTop: () => import("@/components/BackTop"),
   },
   async mounted() {
     /*判断本地存储是否有登录信息*/

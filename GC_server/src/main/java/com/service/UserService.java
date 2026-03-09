@@ -1,6 +1,5 @@
 package com.service;
 
-import com.pojo.wrapper.CommentBrief;
 import com.pojo.wrapper.UserCode;
 import com.pojo.User;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,6 +42,6 @@ public interface UserService {
 
     List<User> getUserFocus(Integer userId);
 
-    void setUserLikeFlag(List<User> users,Integer userId);
+    void setUserLikeFlag(List<User> users, Integer userId);
 
 }

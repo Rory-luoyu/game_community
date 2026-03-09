@@ -19,8 +19,8 @@ Thumbs.db
 node_modules/
 
 # 构建产物
-/dist/
-/build/
+dist/
+build/
 
 # 前端环境变量文件
 .env.local
@@ -37,7 +37,7 @@ pnpm-debug.log*
 # =====================
 # 编译产物
 *.class
-/target/
+target/
 
 # 包文件
 *.jar
@@ -56,7 +56,7 @@ pnpm-debug.log*
 hs_err_pid*
 
 # 本地配置文件（包含敏感信息）
-/src/main/resources/application-dev.yml
+src/main/resources/application-dev.yml
 
 # =====================
 # IDE 相关
@@ -125,6 +125,7 @@ test/
 
 # 日志目录
 log/
+logs/
 
 # 静态文件目录（如果需要版本控制可移除）
 static/
