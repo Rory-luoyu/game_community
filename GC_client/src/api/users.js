@@ -1,4 +1,4 @@
-import {ajax} from "@/api/ajax";
+import { ajax } from "@/api/ajax";
 
 /**
  * utils路径下为一些公有工具类接口
